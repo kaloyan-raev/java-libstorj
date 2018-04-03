@@ -56,7 +56,7 @@ before_deploy:
     cd libstorj/depends && make HOST="x86_64-w64-mingw32" BUILD_DLL=1 && cd ..;
     PKG_CONFIG_LIBDIR="$(pwd)/depends/build/x86_64-w64-mingw32/lib/pkgconfig" CFLAGS="-I$(pwd)/depends/build/x86_64-w64-mingw32/include -L$(pwd)/depends/build/x86_64-w64-mingw32/lib -DSTORJDLL" ./configure --host=x86_64-w64-mingw32 --prefix=$(pwd)/depends/build/x86_64-w64-mingw32;
     make;
-fi
+  fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
     cd build/libs/jni/shared/;
     cp /usr/local/lib/libstorj.2.dylib .;
