@@ -52,29 +52,29 @@ cache:
 
 before_deploy:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-    cd build/libs/jni/shared/
-    cp /usr/local/lib/libstorj.2.dylib .
-    cp /usr/lib/libcurl.4.dylib .
-    cp /usr/local/opt/nettle/lib/libnettle.6.dylib .
-    cp /usr/local/opt/json-c/lib/libjson-c.2.dylib .
-    cp /usr/local/opt/libuv/lib/libuv.1.dylib .
-    chmod 666 *.dylib
-    install_name_tool -id libstorj.2.dylib libstorj.2.dylib
-    install_name_tool -id libcurl.4.dylib libcurl.4.dylib
-    install_name_tool -id libnettle.6.dylib libnettle.6.dylib
-    install_name_tool -id libjson-c.2.dylib libjson-c.2.dylib
-    install_name_tool -id libuv.1.dylib libuv.1.dylib
-    install_name_tool -change /usr/local/lib/libstorj.2.dylib libstorj.2.dylib libstorj-java.dylib
-    install_name_tool -change /usr/lib/libcurl.4.dylib libcurl.4.dylib libstorj-java.dylib
-    install_name_tool -change /usr/local/opt/json-c/lib/libjson-c.2.dylib libjson-c.2.dylib libstorj-java.dylib
-    install_name_tool -change /usr/local/opt/nettle/lib/libnettle.6.dylib libnettle.6.dylib libstorj-java.dylib
-    install_name_tool -change /usr/local/opt/libuv/lib/libuv.1.dylib libuv.1.dylib libstorj-java.dylib
-    install_name_tool -change /usr/lib/libcurl.4.dylib libcurl.4.dylib libstorj.2.dylib
-    install_name_tool -change /usr/local/opt/json-c/lib/libjson-c.2.dylib libjson-c.2.dylib libstorj.2.dylib
-    install_name_tool -change /usr/local/opt/nettle/lib/libnettle.6.dylib libnettle.6.dylib libstorj.2.dylib
-    install_name_tool -change /usr/local/opt/libuv/lib/libuv.1.dylib libuv.1.dylib libstorj.2.dylib
-    tar -zcf java-libstorj-$TRAVIS_TAG-macos-dylibs.tar.gz *.dylib
-    cd ../../../../
+    cd build/libs/jni/shared/;
+    cp /usr/local/lib/libstorj.2.dylib .;
+    cp /usr/lib/libcurl.4.dylib .;
+    cp /usr/local/opt/nettle/lib/libnettle.6.dylib .;
+    cp /usr/local/opt/json-c/lib/libjson-c.2.dylib .;
+    cp /usr/local/opt/libuv/lib/libuv.1.dylib .;
+    chmod 666 *.dylib;
+    install_name_tool -id libstorj.2.dylib libstorj.2.dylib;
+    install_name_tool -id libcurl.4.dylib libcurl.4.dylib;
+    install_name_tool -id libnettle.6.dylib libnettle.6.dylib;
+    install_name_tool -id libjson-c.2.dylib libjson-c.2.dylib;
+    install_name_tool -id libuv.1.dylib libuv.1.dylib;
+    install_name_tool -change /usr/local/lib/libstorj.2.dylib libstorj.2.dylib libstorj-java.dylib;
+    install_name_tool -change /usr/lib/libcurl.4.dylib libcurl.4.dylib libstorj-java.dylib;
+    install_name_tool -change /usr/local/opt/json-c/lib/libjson-c.2.dylib libjson-c.2.dylib libstorj-java.dylib;
+    install_name_tool -change /usr/local/opt/nettle/lib/libnettle.6.dylib libnettle.6.dylib libstorj-java.dylib;
+    install_name_tool -change /usr/local/opt/libuv/lib/libuv.1.dylib libuv.1.dylib libstorj-java.dylib;
+    install_name_tool -change /usr/lib/libcurl.4.dylib libcurl.4.dylib libstorj.2.dylib;
+    install_name_tool -change /usr/local/opt/json-c/lib/libjson-c.2.dylib libjson-c.2.dylib libstorj.2.dylib;
+    install_name_tool -change /usr/local/opt/nettle/lib/libnettle.6.dylib libnettle.6.dylib libstorj.2.dylib;
+    install_name_tool -change /usr/local/opt/libuv/lib/libuv.1.dylib libuv.1.dylib libstorj.2.dylib;
+    tar -zcf java-libstorj-$TRAVIS_TAG-macos-dylibs.tar.gz *.dylib;
+    cd ../../../../;
   fi
 
 deploy:
