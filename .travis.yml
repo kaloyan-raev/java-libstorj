@@ -53,9 +53,18 @@ cache:
 before_deploy:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
     sudo apt-get install gcc-mingw-w64-x86-64 g++-mingw-w64-x86-64;
-    cd libstorj/depends && sed -i -e 's#ftp://ftp.gnutls.org#https://www.gnupg.org/ftp#g' packages/gnutls.mk && make HOST="x86_64-w64-mingw32" BUILD_DLL=1 && cd ..;
+    cd libstorj;
+    make clean;
+    cd depends;
+    sed -i -e 's#ftp://ftp.gnutls.org#https://www.gnupg.org/ftp#g' packages/gnutls.mk;
+    make HOST="x86_64-w64-mingw32" BUILD_DLL=1;
+    cd ..;
     PKG_CONFIG_LIBDIR="$(pwd)/depends/build/x86_64-w64-mingw32/lib/pkgconfig" CFLAGS="-I$(pwd)/depends/build/x86_64-w64-mingw32/include -L$(pwd)/depends/build/x86_64-w64-mingw32/lib -DSTORJDLL" ./configure --host=x86_64-w64-mingw32 --prefix=$(pwd)/depends/build/x86_64-w64-mingw32;
     make;
+    cd ..;
+    curl -sSL https://github.com/ojdkbuild/ojdkbuild/releases/download/1.8.0.161-1/java-1.8.0-openjdk-1.8.0.161-1.b14.ojdkbuild.windows.x86_64.zip | tar -zxv;
+    mv java-1.8.0-openjdk-1.8.0.161-1.b14.ojdkbuild.windows.x86_64 jdk;
+    x86_64-w64-mingw32-g++-win32 -Wall -D_JNI_IMPLEMENTATION_ -Wl,--kill-at -I./jdk/include -I./jdk/include/win32 -I./libstorj/src -I./libstorj/depends/sources/x86_64-w64-mingw32 -I./libstorj/depends/sources/x86_64-w64-mingw32/libuv/include -I./libstorj/depends/sources/x86_64-w64-mingw32/libcurl/include -shared -o storj-java.dll ./java-libstorj/src/main/cpp/storj-java.cpp -L./libstorj/src/.libs -L./libstorj/depends/build/x86_64-w64-mingw32/lib -lstorj -ljson-c -luv -lcurl -lnettle;
   fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
     cd build/libs/jni/shared/;
@@ -90,6 +99,7 @@ deploy:
     secure: qt1C8CdH3g0I3KAxw1OIyNfwHSgAe0ZCsUV+WPCtsELjMWYC8jxx8ikWDxWraq3EigJ1mfgkjj8+5fsPlRi3n42Lm72MAGJes6OcvNSNxXsR2fkpGsHB9yM+PkOXkxd+Rf0uD7FeHNu8CurRBTGnb3jtNdJPlO9+c3Y/w/HEewlb24BfANfWx0yjD2CpCucHH7SM9pDMpZyJZEyozSPGzK68tiMT6dX6zfnIn+rvaGMabDnx5VE+TlYJJfWTNpcXPghiN2dTwskYDaFXdIHQ/t3otZk0zNcdQYcUk59sf3i6peoEILR14ICMQDqgw2ggoDIIrsuDjXmd8H20pApKa1RxQy6FffyqKaGPOiOPVJrDQB8XaDOi9gZ/S7Qe06w+3fJr8aJRTpuuSxNtAhl9Kp3pS0f66XY79vGDG9P+Ta2oB9o7J7+a52JtcCEZcFeuZbo7yna67CWGf4lTU9ODYwcuNL1iVpr0LrPMP3YcHe/Mk29mGZd4nPfgLFOhQiZKBV6cci/bY1M/h8AiMrzBetUfX+2148PCa0STglh98I52LJg6UjgXX9fGQjfb1ce79hKesCc4Y7reX8UCYio3jFk5LFtrRfvznb34A6Zd90pyjyTAXXY8YseNoycLvkeRwwqyddFoUXFXStPMXQwPeRIxULcc+sG0hVmSpGZu8jY=
   file:
   - build/libs/libstorj-java-$TRAVIS_TAG.jar
+  - storj-java.dll
   - build/libs/jni/shared/java-libstorj-$TRAVIS_TAG-macos-dylibs.tar.gz
   on:
     repo: kaloyan-raev/java-libstorj
