@@ -53,7 +53,7 @@ cache:
 before_deploy:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
     sudo apt-get install gcc-mingw-w64-x86-64 g++-mingw-w64-x86-64;
-    cd libstorj/depends && make HOST="x86_64-w64-mingw32" BUILD_DLL=1 && cd ..;
+    cd libstorj/depends && sed -i -e 's#ftp://ftp.gnutls.org#https://www.gnupg.org/ftp#g' packages/gnutls.mk && make HOST="x86_64-w64-mingw32" BUILD_DLL=1 && cd ..;
     PKG_CONFIG_LIBDIR="$(pwd)/depends/build/x86_64-w64-mingw32/lib/pkgconfig" CFLAGS="-I$(pwd)/depends/build/x86_64-w64-mingw32/include -L$(pwd)/depends/build/x86_64-w64-mingw32/lib -DSTORJDLL" ./configure --host=x86_64-w64-mingw32 --prefix=$(pwd)/depends/build/x86_64-w64-mingw32;
     make;
   fi
