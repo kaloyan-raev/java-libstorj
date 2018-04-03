@@ -51,35 +51,37 @@ cache:
   - "$HOME/Library/Caches/Homebrew"
 
 before_deploy:
-- cd build/libs/jni/shared/
-- cp /usr/local/lib/libstorj.2.dylib .
-- cp /usr/lib/libcurl.4.dylib .
-- cp /usr/local/opt/nettle/lib/libnettle.6.dylib .
-- cp /usr/local/opt/json-c/lib/libjson-c.2.dylib .
-- cp /usr/local/opt/libuv/lib/libuv.1.dylib .
-- chmod 666 *.dylib
-- install_name_tool -id libstorj.2.dylib libstorj.2.dylib
-- install_name_tool -id libcurl.4.dylib libcurl.4.dylib
-- install_name_tool -id libnettle.6.dylib libnettle.6.dylib
-- install_name_tool -id libjson-c.2.dylib libjson-c.2.dylib
-- install_name_tool -id libuv.1.dylib libuv.1.dylib
-- install_name_tool -change /usr/local/lib/libstorj.2.dylib libstorj.2.dylib libstorj-java.dylib
-- install_name_tool -change /usr/lib/libcurl.4.dylib libcurl.4.dylib libstorj-java.dylib
-- install_name_tool -change /usr/local/opt/json-c/lib/libjson-c.2.dylib libjson-c.2.dylib libstorj-java.dylib
-- install_name_tool -change /usr/local/opt/nettle/lib/libnettle.6.dylib libnettle.6.dylib libstorj-java.dylib
-- install_name_tool -change /usr/local/opt/libuv/lib/libuv.1.dylib libuv.1.dylib libstorj-java.dylib
-- install_name_tool -change /usr/lib/libcurl.4.dylib libcurl.4.dylib libstorj.2.dylib
-- install_name_tool -change /usr/local/opt/json-c/lib/libjson-c.2.dylib libjson-c.2.dylib libstorj.2.dylib
-- install_name_tool -change /usr/local/opt/nettle/lib/libnettle.6.dylib libnettle.6.dylib libstorj.2.dylib
-- install_name_tool -change /usr/local/opt/libuv/lib/libuv.1.dylib libuv.1.dylib libstorj.2.dylib
-- tar -zcf java-libstorj-$TRAVIS_TAG-macos-dylibs.tar.gz *.dylib
-- cd ../../../../
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+    cd build/libs/jni/shared/
+    cp /usr/local/lib/libstorj.2.dylib .
+    cp /usr/lib/libcurl.4.dylib .
+    cp /usr/local/opt/nettle/lib/libnettle.6.dylib .
+    cp /usr/local/opt/json-c/lib/libjson-c.2.dylib .
+    cp /usr/local/opt/libuv/lib/libuv.1.dylib .
+    chmod 666 *.dylib
+    install_name_tool -id libstorj.2.dylib libstorj.2.dylib
+    install_name_tool -id libcurl.4.dylib libcurl.4.dylib
+    install_name_tool -id libnettle.6.dylib libnettle.6.dylib
+    install_name_tool -id libjson-c.2.dylib libjson-c.2.dylib
+    install_name_tool -id libuv.1.dylib libuv.1.dylib
+    install_name_tool -change /usr/local/lib/libstorj.2.dylib libstorj.2.dylib libstorj-java.dylib
+    install_name_tool -change /usr/lib/libcurl.4.dylib libcurl.4.dylib libstorj-java.dylib
+    install_name_tool -change /usr/local/opt/json-c/lib/libjson-c.2.dylib libjson-c.2.dylib libstorj-java.dylib
+    install_name_tool -change /usr/local/opt/nettle/lib/libnettle.6.dylib libnettle.6.dylib libstorj-java.dylib
+    install_name_tool -change /usr/local/opt/libuv/lib/libuv.1.dylib libuv.1.dylib libstorj-java.dylib
+    install_name_tool -change /usr/lib/libcurl.4.dylib libcurl.4.dylib libstorj.2.dylib
+    install_name_tool -change /usr/local/opt/json-c/lib/libjson-c.2.dylib libjson-c.2.dylib libstorj.2.dylib
+    install_name_tool -change /usr/local/opt/nettle/lib/libnettle.6.dylib libnettle.6.dylib libstorj.2.dylib
+    install_name_tool -change /usr/local/opt/libuv/lib/libuv.1.dylib libuv.1.dylib libstorj.2.dylib
+    tar -zcf java-libstorj-$TRAVIS_TAG-macos-dylibs.tar.gz *.dylib
+    cd ../../../../
+  fi
 
 deploy:
   provider: releases
   skip_cleanup: true
   api_key:
-    secure: sUl29Ge+qL9iP0mfX0WFqetEgmKgpnCyGSbkDEJauwDILS/SNrz10S3GTMquwX4IlozOw8G+ri6hQ/hQ3JqAgcms389EU8XqVoEeV/rKRs0RbO3NlBk3OJpuspb4WPV3u2PDz6KFwQHt4hKTveOx+kTfPapt6d7TQ22L7juh4xNYisLvBvDz6tKQURIO9WlG1hY6QOhdF2dVR7LhMg9MLo/EjmS8ZXuzJ3CRAmU6wp7DEF3c1Zlm9PwcPpgm/vD2hzFEoh6AYlQBxoEJf8/aa6CoLrCdQdv+inrvHkyqNVADa1RBrTk5EqCAX9shAiiCEZoTky44llM8hlJsgVV+Wx46ukSo+AxoFR/LNvuFilkMgM3bNL91XEyiyu3JBbutHWJfrCEkArr4/LMGhAgCyny4R6sieijJublYLbmmINOjid4J3x6TbcwK3vQrf0qScPlPD4iVNIs/frMewqHpXh+rKIr2tz8oTmY58PtGAhmniiWLGPTixzAjvBe5F4Ash+zxcvLuXZAtgzbYsJR3Pg4lhVsa2Lm9BjG3WNbvXsm5M8MKkVNhEX73zpGG202PG1iUM3HAYywsDOO3eoYEkOlVmZbarSCHwDxvIhrhaolgJ007BrDe2UdgCRH3Tmw6Vxe1lXINOK6Ts08p84qJOLOtF2cLj2mWJGsdBiEiGo0=
+    secure: qt1C8CdH3g0I3KAxw1OIyNfwHSgAe0ZCsUV+WPCtsELjMWYC8jxx8ikWDxWraq3EigJ1mfgkjj8+5fsPlRi3n42Lm72MAGJes6OcvNSNxXsR2fkpGsHB9yM+PkOXkxd+Rf0uD7FeHNu8CurRBTGnb3jtNdJPlO9+c3Y/w/HEewlb24BfANfWx0yjD2CpCucHH7SM9pDMpZyJZEyozSPGzK68tiMT6dX6zfnIn+rvaGMabDnx5VE+TlYJJfWTNpcXPghiN2dTwskYDaFXdIHQ/t3otZk0zNcdQYcUk59sf3i6peoEILR14ICMQDqgw2ggoDIIrsuDjXmd8H20pApKa1RxQy6FffyqKaGPOiOPVJrDQB8XaDOi9gZ/S7Qe06w+3fJr8aJRTpuuSxNtAhl9Kp3pS0f66XY79vGDG9P+Ta2oB9o7J7+a52JtcCEZcFeuZbo7yna67CWGf4lTU9ODYwcuNL1iVpr0LrPMP3YcHe/Mk29mGZd4nPfgLFOhQiZKBV6cci/bY1M/h8AiMrzBetUfX+2148PCa0STglh98I52LJg6UjgXX9fGQjfb1ce79hKesCc4Y7reX8UCYio3jFk5LFtrRfvznb34A6Zd90pyjyTAXXY8YseNoycLvkeRwwqyddFoUXFXStPMXQwPeRIxULcc+sG0hVmSpGZu8jY=
   file:
   - build/libs/libstorj-java-$TRAVIS_TAG.jar
   - build/libs/jni/shared/java-libstorj-$TRAVIS_TAG-macos-dylibs.tar.gz
