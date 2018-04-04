@@ -62,7 +62,8 @@ before_deploy:
     PKG_CONFIG_LIBDIR="$(pwd)/depends/build/x86_64-w64-mingw32/lib/pkgconfig" CFLAGS="-I$(pwd)/depends/build/x86_64-w64-mingw32/include -L$(pwd)/depends/build/x86_64-w64-mingw32/lib -DSTORJDLL" ./configure --host=x86_64-w64-mingw32 --prefix=$(pwd)/depends/build/x86_64-w64-mingw32;
     make;
     cd ..;
-    curl -sSL https://github.com/ojdkbuild/ojdkbuild/releases/download/1.8.0.161-1/java-1.8.0-openjdk-1.8.0.161-1.b14.ojdkbuild.windows.x86_64.zip | tar -zxv;
+    wget https://github.com/ojdkbuild/ojdkbuild/releases/download/1.8.0.161-1/java-1.8.0-openjdk-1.8.0.161-1.b14.ojdkbuild.windows.x86_64.zip;
+    unzip java-1.8.0-openjdk-1.8.0.161-1.b14.ojdkbuild.windows.x86_64.zip;
     mv java-1.8.0-openjdk-1.8.0.161-1.b14.ojdkbuild.windows.x86_64 jdk;
     x86_64-w64-mingw32-g++-win32 -Wall -D_JNI_IMPLEMENTATION_ -Wl,--kill-at -I./jdk/include -I./jdk/include/win32 -I./libstorj/src -I./libstorj/depends/sources/x86_64-w64-mingw32 -I./libstorj/depends/sources/x86_64-w64-mingw32/libuv/include -I./libstorj/depends/sources/x86_64-w64-mingw32/libcurl/include -shared -o storj-java.dll ./java-libstorj/src/main/cpp/storj-java.cpp -L./libstorj/src/.libs -L./libstorj/depends/build/x86_64-w64-mingw32/lib -lstorj -ljson-c -luv -lcurl -lnettle;
   fi
