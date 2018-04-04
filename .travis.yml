@@ -57,6 +57,7 @@ before_deploy:
     make clean;
     cd depends;
     sed -i -e 's#ftp://ftp.gnutls.org#https://www.gnupg.org/ftp#g' packages/gnutls.mk;
+    sed -i -e 's#lib"#lib -D_WIN32_WINNT=0x0600 -DNCRYPT_PAD_PKCS1_FLAG=2 -DNCRYPT_SHA1_ALGORITHM=BCRYPT_SHA1_ALGORITHM -DNCRYPT_SHA256_ALGORITHM=BCRYPT_SHA256_ALGORITHM -DCERT_NCRYPT_KEY_HANDLE_TRANSFER_PROP_ID=99"#g' packages/gnutls.mk;
     make HOST="x86_64-w64-mingw32" BUILD_DLL=1;
     cd ..;
     PKG_CONFIG_LIBDIR="$(pwd)/depends/build/x86_64-w64-mingw32/lib/pkgconfig" CFLAGS="-I$(pwd)/depends/build/x86_64-w64-mingw32/include -L$(pwd)/depends/build/x86_64-w64-mingw32/lib -DSTORJDLL" ./configure --host=x86_64-w64-mingw32 --prefix=$(pwd)/depends/build/x86_64-w64-mingw32;
