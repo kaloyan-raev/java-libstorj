@@ -66,7 +66,7 @@ before_deploy:
     wget https://github.com/ojdkbuild/ojdkbuild/releases/download/1.8.0.161-1/java-1.8.0-openjdk-1.8.0.161-1.b14.ojdkbuild.windows.x86_64.zip;
     unzip java-1.8.0-openjdk-1.8.0.161-1.b14.ojdkbuild.windows.x86_64.zip;
     mv java-1.8.0-openjdk-1.8.0.161-1.b14.ojdkbuild.windows.x86_64 jdk;
-    x86_64-w64-mingw32-g++ -Wall -D_JNI_IMPLEMENTATION_ -Wl,--kill-at -I./jdk/include -I./jdk/include/win32 -I./libstorj/src -I./libstorj/depends/build/x86_64-w64-mingw32/include -shared -static-libgcc -static-libstdc++ -o storj-java.dll ./src/main/cpp/storj-java.cpp -L./libstorj/src/.libs -L./libstorj/depends/build/x86_64-w64-mingw32/lib -lstorj -ljson-c -luv -lcurl -lnettle -Wl,-Bstatic -lstdc++ -lpthread;
+    x86_64-w64-mingw32-g++ -Wall -D_JNI_IMPLEMENTATION_ -Wl,--kill-at -I./jdk/include -I./jdk/include/win32 -I./libstorj/src -I./libstorj/depends/build/x86_64-w64-mingw32/include -shared -static-libgcc -static-libstdc++ -o storj-java.dll ./src/main/cpp/storj-java.cpp -L./libstorj/src/.libs -L./libstorj/depends/build/x86_64-w64-mingw32/lib -lstorj -ljson-c -luv -lcurl -lnettle;
     cd build/libs/jni/shared/;
     mv ../../../../storj-java.dll .;
     cp ../../../../libstorj/src/.libs/libstorj-2.dll .;
@@ -77,6 +77,7 @@ before_deploy:
     cp ../../../../libstorj/depends/build/x86_64-w64-mingw32/bin/libjson-c-3.dll .;
     cp ../../../../libstorj/depends/build/x86_64-w64-mingw32/bin/libnettle-6.dll .;
     cp ../../../../libstorj/depends/build/x86_64-w64-mingw32/bin/libuv-1.dll .;
+    cp /usr/x86_64-w64-mingw32/lib/libwinpthread-1.dll .;
     zip java-libstorj-$TRAVIS_TAG-win64-dlls.zip *.dll;
     cd ../../../../;
   fi
