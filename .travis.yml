@@ -84,6 +84,8 @@ before_deploy:
     cp /usr/local/lib/libnettle.so.6 .;
     cp /lib/x86_64-linux-gnu/libjson-c.so.2 .;
     cp /usr/lib/x86_64-linux-gnu/libcurl-gnutls.so.4 .;
+    cp /usr/lib/x86_64-linux-gnu/librtmp.so.0 .;
+    cp /usr/lib/x86_64-linux-gnu/libgnutls.so.26 .;
     tar -zcf java-libstorj-$TRAVIS_TAG-linux64-so.tar.gz *.so*;
     cd ../../../../;
   fi
